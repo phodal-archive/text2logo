@@ -20,25 +20,26 @@ def add_corners(im, rad):
     return im
 
 
+def generate_image(word, key):
+    global img, draw, text_to_draw, font
+    img = Image.new('RGB', (128, 128), color)
+    draw = ImageDraw.Draw(img)
+    text_to_draw = unicode(word, 'utf-8')
+    font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', 24)
+    draw.text((2, 50), text_to_draw, font=font)
+    del draw
+    img = add_corners(img, 20)
+    img.save('build/' + key + '.png')
+
 ConfigColor.read("./color.ini")
-print ConfigColor.sections()[0]
 
 # items in section 'NODE': key, value pairs
-for key, value in ConfigColor.items('Color'):
-    print key, value.replace('#', '')
+for word, filename in ConfigColor.items('Color'):
+    print word, filename.replace('#', '')
 
-for key, value in ConfigColor.items('Text'):
-    print key, value.replace('#', '')
 
-rgbstr = '1abc9c'
-color = struct.unpack('BBB', rgbstr.decode('hex'))
-
-img = Image.new('RGB', (128, 128), color)
-draw = ImageDraw.Draw(img)
-
-text_to_draw = unicode('自动化测试', 'utf-8')
-font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', 24)
-draw.text((2, 50), text_to_draw, font=font)
-del draw
-img = add_corners(img, 20)
-img.save('build/image.png')
+for word, filename in ConfigColor.items('Text'):
+    print word, filename.replace('#', '')
+    rgbstr = '1abc9c'
+    color = struct.unpack('BBB', rgbstr.decode('hex'))
+    generate_image(word, filename)
