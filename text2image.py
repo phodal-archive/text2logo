@@ -2,6 +2,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import ConfigParser
 import struct
+from random import randint
 
 ConfigColor = ConfigParser.ConfigParser()
 
@@ -20,26 +21,31 @@ def add_corners(im, rad):
     return im
 
 
-def generate_image(word, key):
+def generate_image(text, key):
     global img, draw, text_to_draw, font
     img = Image.new('RGB', (128, 128), color)
     draw = ImageDraw.Draw(img)
-    text_to_draw = unicode(word, 'utf-8')
+    text_to_draw = unicode(text, 'utf-8')
     font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', 24)
     draw.text((2, 50), text_to_draw, font=font)
     del draw
     img = add_corners(img, 20)
     img.save('build/' + key + '.png')
 
+
 ConfigColor.read("./color.ini")
 
-# items in section 'NODE': key, value pairs
-for word, filename in ConfigColor.items('Color'):
-    print word, filename.replace('#', '')
+colors = []
 
+# items in section 'NODE': key, value pairs
+for color_name, color in ConfigColor.items('Color'):
+    colors.append(color.replace('#', ''))
+
+colors_length = ConfigColor.items('Color').__len__()
 
 for word, filename in ConfigColor.items('Text'):
+    random_int = randint(1, colors_length)
     print word, filename.replace('#', '')
-    rgbstr = '1abc9c'
+    rgbstr = colors[random_int]
     color = struct.unpack('BBB', rgbstr.decode('hex'))
     generate_image(word.upper(), filename)
