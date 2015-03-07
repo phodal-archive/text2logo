@@ -10,7 +10,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -56,4 +55,3 @@ docs/_build/
 target/
 
 .idea
-build/
