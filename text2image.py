@@ -21,7 +21,15 @@ def add_corners(im, rad):
 
 
 ConfigColor.read("./color.ini")
-# print ConfigColor.sections()
+print ConfigColor.sections()[0]
+
+# items in section 'NODE': key, value pairs
+for key, value in ConfigColor.items('Color'):
+    print key, value.replace('#', '')
+
+for key, value in ConfigColor.items('Text'):
+    print key, value.replace('#', '')
+
 rgbstr = '1abc9c'
 color = struct.unpack('BBB', rgbstr.decode('hex'))
 
