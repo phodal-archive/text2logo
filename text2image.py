@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 from PIL import Image, ImageDraw, ImageFont
+import ConfigParser
+import struct
+
+ConfigColor = ConfigParser.ConfigParser()
 
 
 def add_corners(im, rad):
@@ -16,7 +20,12 @@ def add_corners(im, rad):
     return im
 
 
-img = Image.new('RGBA', (128, 128), (255, 255, 255, 1))
+ConfigColor.read("./color.ini")
+# print ConfigColor.sections()
+rgbstr = '1abc9c'
+color = struct.unpack('BBB', rgbstr.decode('hex'))
+
+img = Image.new('RGB', (128, 128), color)
 draw = ImageDraw.Draw(img)
 
 text_to_draw = unicode('自动化测试', 'utf-8')
