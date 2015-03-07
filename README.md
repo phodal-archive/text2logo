@@ -1,4 +1,8 @@
-# text-to-image)
+# text2logo
+
+> A tool to generate Color with text for [Skillock](https://github.com/phodal/skillock) & [Sherlock](https://github.com/phodal/sherlock)
+
+Colors Basis on: [https://github.com/mildrenben/flat-ui-colors/](https://github.com/mildrenben/flat-ui-colors/)
 
 ![Example](build/auto_test.png)
 ![Example](build/cgi.png)
