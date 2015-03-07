@@ -42,4 +42,4 @@ for word, filename in ConfigColor.items('Text'):
     print word, filename.replace('#', '')
     rgbstr = '1abc9c'
     color = struct.unpack('BBB', rgbstr.decode('hex'))
-    generate_image(word, filename)
+    generate_image(word.upper(), filename)
