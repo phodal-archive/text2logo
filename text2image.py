@@ -25,15 +25,21 @@ def hex2rgb(hex_color):
     return struct.unpack('BBB', hex_color.decode('hex'))
 
 
-def generate_image(text, filename, background_color, font_color):
-    img = Image.new('RGB', (128, 128), background_color)
+def generate_image(text, file_name, background_color, fill_color):
+    width = 128
+    height = 128
+    font_size = 24
+
+    img = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(img)
     text_to_draw = unicode(text, 'utf-8')
-    font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', 24)
-    draw.text((2, 50), text_to_draw, font=font, fill=font_color)
+    font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', font_size)
+    w, h = draw.textsize(text, font=font)
+    print w, h
+    draw.text(((width - w) / 2, (height - font_size) / 2), text_to_draw, font=font, fill=fill_color)
     del draw
     img = add_corners(img, 20)
-    img.save('build/' + filename + '.png')
+    img.save('build/' + file_name + '.png')
 
 
 ConfigColor.read("./color.ini")
