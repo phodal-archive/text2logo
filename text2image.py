@@ -21,31 +21,36 @@ def add_corners(im, rad):
     return im
 
 
-def generate_image(text, key):
-    global img, draw, text_to_draw, font
-    img = Image.new('RGB', (128, 128), color)
+def hex2rgb(hex_color):
+    return struct.unpack('BBB', hex_color.decode('hex'))
+
+
+def generate_image(text, filename, background_color, font_color):
+    img = Image.new('RGB', (128, 128), background_color)
     draw = ImageDraw.Draw(img)
     text_to_draw = unicode(text, 'utf-8')
     font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', 24)
-    draw.text((2, 50), text_to_draw, font=font)
+    draw.text((2, 50), text_to_draw, font=font, fill=font_color)
     del draw
     img = add_corners(img, 20)
-    img.save('build/' + key + '.png')
+    img.save('build/' + filename + '.png')
 
 
 ConfigColor.read("./color.ini")
 
-colors = []
+bg_colors = []
+font_colors = []
 
-# items in section 'NODE': key, value pairs
 for color_name, color in ConfigColor.items('Color'):
-    colors.append(color.replace('#', ''))
+    bg_colors.append(color.replace('#', '').split(',')[0])
+    font_colors.append(color.replace('#', '').split(',')[1])
 
 colors_length = ConfigColor.items('Color').__len__()
 
 for word, filename in ConfigColor.items('Text'):
-    random_int = randint(1, colors_length)
+    random_int = randint(0, colors_length - 1)
     print word, filename.replace('#', '')
-    rgbstr = colors[random_int]
-    color = struct.unpack('BBB', rgbstr.decode('hex'))
-    generate_image(word.upper(), filename)
+    bg_color = hex2rgb(bg_colors[random_int])
+    font_color = hex2rgb(font_colors[random_int])
+    print bg_colors[random_int], font_colors[random_int]
+    generate_image(word.upper(), filename, bg_color, font_color)
