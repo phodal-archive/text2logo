@@ -29,24 +29,27 @@ def hex2rgb(hex_color):
 
 
 def cal_text_length(text):
+    en_text_length = 13
+    zh_text_length = 22
+    zh_text_size = 3
+    offset = 8
+
     if BeautifulSoup(text).originalEncoding == 'utf-8':
-        w = 44 * text.__len__() / 3
+        w = zh_text_length * text.__len__() / zh_text_size + offset
     else:
-        w = 27 * text.__len__()
+        w = en_text_length * text.__len__()
     return w
 
 
 def generate_image(text, file_name, background_color, fill_color):
-    width = 256
-    height = 256
-    font_size = 48
-
+    width = 128
+    height = 128
+    font_size = 24
     img = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(img)
     text_to_draw = unicode(text, 'utf-8')
     font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', font_size)
     w = cal_text_length(text)
-
     draw.text(((width - w) / 2, (height - font_size) / 2), text_to_draw, font=font, fill=fill_color)
     del draw
     img = add_corners(img, 20)
