@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from _ctypes import sizeof
 from PIL import Image, ImageDraw, ImageFont
 import ConfigParser
 import struct
+
 from random import randint
+from BeautifulSoup import BeautifulSoup
 
 ConfigColor = ConfigParser.ConfigParser()
 
@@ -25,17 +28,25 @@ def hex2rgb(hex_color):
     return struct.unpack('BBB', hex_color.decode('hex'))
 
 
+def cal_text_length(text):
+    if BeautifulSoup(text).originalEncoding == 'utf-8':
+        w = 44 * text.__len__() / 3
+    else:
+        w = 27 * text.__len__()
+    return w
+
+
 def generate_image(text, file_name, background_color, fill_color):
-    width = 128
-    height = 128
-    font_size = 24
+    width = 256
+    height = 256
+    font_size = 48
 
     img = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(img)
     text_to_draw = unicode(text, 'utf-8')
     font = ImageFont.truetype('fonts/NotoSansCJKsc-Regular.otf', font_size)
-    w, h = draw.textsize(text, font=font)
-    print w, h
+    w = cal_text_length(text)
+
     draw.text(((width - w) / 2, (height - font_size) / 2), text_to_draw, font=font, fill=fill_color)
     del draw
     img = add_corners(img, 20)
